@@ -1,6 +1,3 @@
-/**
- * 
- */
 package scorer;
 
 /**
@@ -13,8 +10,10 @@ public class BowlingScorer {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		if (args != null && args.length == 1 && !args[0].trim().isEmpty()) {
+			ScoringHelper scoringHelper = new ScoringHelper();
+			System.out.println(scoringHelper.score());
+		}
 	}
 
 }
