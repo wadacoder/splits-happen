@@ -28,4 +28,15 @@ public enum Roll {
 		return value;
 	}
 
+	public static Roll find(String value) {
+		Roll rollFound = null;
+		for (Roll roll : Roll.values()) {
+			if (roll.getValue().equalsIgnoreCase(value)) {
+				rollFound = roll;
+				break;
+			}
+		}
+		return rollFound;
+	}
+
 }
