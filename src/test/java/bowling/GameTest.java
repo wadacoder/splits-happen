@@ -114,4 +114,147 @@ public class GameTest {
 		assertEquals(Roll.ONE, rolls_10.get(2));
 	}
 
+	@Test
+	public void testGetScore_AllMisses() {
+		Game game = new Game("--------------------");
+		assertEquals(0, game.getScore());
+	}
+
+	public void testGetScore_AllMisses_ButLastThreeStrikes() {
+		Game game = new Game("------------------XXX");
+		assertEquals(30, game.getScore());
+	}
+
+	public void testGetScore_AllMisses_ButLastThreeStrikeAndSpare() {
+		Game game = new Game("------------------X1/");
+		assertEquals(20, game.getScore());
+	}
+
+	public void testGetScore_AllMisses_ButLastThreeSpareAndStrike() {
+		Game game = new Game("------------------1/X");
+		assertEquals(20, game.getScore());
+	}
+
+	public void testGetScore_AllMisses_ButLastThreeSpareAnd2() {
+		Game game = new Game("------------------1/2");
+		assertEquals(12, game.getScore());
+	}
+
+	public void testGetScore_AllMisses_ButLastTwo1And2() {
+		Game game = new Game("------------------12");
+		assertEquals(3, game.getScore());
+	}
+
+	public void testGetScore_AllMisses_ButLastThreeSpare1And2() {
+		Game game = new Game("-----------------/12");
+		assertEquals(14, game.getScore());
+	}
+
+	public void testGetScore_AllMisses_ButLastThreeStrike1And2() {
+		Game game = new Game("----------------X12");
+		assertEquals(16, game.getScore());
+	}
+
+	public void testGetScore_All9AndMisses() {
+		Game game = new Game("9-9-9-9-9-9-9-9-9-9-");
+		assertEquals(90, game.getScore());
+	}
+
+	public void testGetScore_ProvidedSequence() {
+		Game game = new Game("X7/9-X-88/-6XXX81");
+		assertEquals(167, game.getScore());
+	}
+
+	@Test
+	public void testGetScore_AllStrikes() {
+		Game game = new Game("XXXXXXXXXXXX");
+		assertEquals(300, game.getScore());
+	}
+
+	@Test
+	public void testGetScore_AllSparesWith5Bonus() {
+		Game game = new Game("5/5/5/5/5/5/5/5/5/5/5");
+		assertEquals(105, game.getScore());
+	}
+
+	@Test
+	public void testGetRollScoreForFrame_STRIKE_NOT_LAST_FRAME() {
+		BowlingFrame frame = new BowlingFrame();
+		frame.addRoll(Roll.STRIKE);
+		assertEquals(10, getRollScoreForFrame(frame));
+	}
+
+	@Test
+	public void testGetRollScoreForFrame_STRIKE_LAST_FRAME() {
+		BowlingFrame frame = new BowlingFrame();
+		frame.addRoll(Roll.STRIKE);
+		frame.addRoll(Roll.EIGHT);
+		frame.addRoll(Roll.ONE);
+		assertEquals(10, getRollScoreForFrame(frame));
+	}
+
+	@Test
+	public void testGetRollScoreForFrame_SPARE_STRIKE_LAST_FRAME() {
+		BowlingFrame frame = new BowlingFrame();
+		frame.addRoll(Roll.EIGHT);
+		frame.addRoll(Roll.SPARE);
+		frame.addRoll(Roll.STRIKE);
+		assertEquals(10, getRollScoreForFrame(frame));
+	}
+
+	@Test
+	public void testGetRollScoreForFrame_SPARE() {
+		BowlingFrame frame = new BowlingFrame();
+		frame.addRoll(Roll.ONE);
+		frame.addRoll(Roll.SPARE);
+		assertEquals(10, getRollScoreForFrame(frame));
+	}
+
+	@Test
+	public void testGetRollScoreForFrame_NEITHER_STRIKE_NOR_SPARE() {
+		BowlingFrame frame = new BowlingFrame();
+		frame.addRoll(Roll.ONE);
+		frame.addRoll(Roll.TWO);
+		assertEquals(3, getRollScoreForFrame(frame));
+	}
+
+	private int getRollScoreForFrame(BowlingFrame frame) {
+		int rollScore = 0;
+		List<Roll> rolls = frame.getRolls();
+		if (rolls.contains(Roll.STRIKE) || rolls.contains(Roll.SPARE))
+			rollScore = getScorePerRoll(Roll.STRIKE);
+		else
+			for (Roll roll : rolls)
+				rollScore += getScorePerRoll(roll);
+		return rollScore;
+	}
+
+	private int getScorePerRoll(Roll roll) {
+		switch (roll) {
+		case ONE:
+			return 1;
+		case TWO:
+			return 2;
+		case THREE:
+			return 3;
+		case FOUR:
+			return 4;
+		case FIVE:
+			return 5;
+		case SIX:
+			return 6;
+		case SEVEN:
+			return 7;
+		case EIGHT:
+			return 8;
+		case NINE:
+			return 9;
+		case STRIKE:
+		case SPARE:
+			return 10;
+		case MISS:
+			return 0;
+		}
+		return 0;
+	}
 }
