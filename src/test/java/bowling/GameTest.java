@@ -174,7 +174,7 @@ public class GameTest {
 	@Test
 	public void testGetScore_AllSparesWith5Bonus() {
 		Game game = new Game("5/5/5/5/5/5/5/5/5/5/5");
-		assertEquals(105, game.getScore());
+		assertEquals(150, game.getScore());
 	}
 
 	@Test

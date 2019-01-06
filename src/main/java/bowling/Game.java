@@ -134,12 +134,12 @@ public class Game {
 		List<Roll> rolls = frame.getRolls();
 		// SPARE BONUS = Score for immediate next roll only
 		if (rolls.contains(Roll.SPARE)) {
-			if (isLastFrame(frame))
+			if (isLastFrame(frame)) {
 				// bonus applies only if the second roll is a SPARE
 				if (rolls.indexOf(Roll.SPARE) == 1)
 					bonus = getScorePerRoll(rolls.get(rolls.size() - 1)); // get last roll
-				else
-					bonus = getScorePerRoll(frame.getNext().getRolls().get(0)); // get first roll of next frame
+			} else
+				bonus = getScorePerRoll(frame.getNext().getRolls().get(0)); // get first roll of next frame
 		}
 		// STRIKE BONUS on first roll = Score for immediate next two rolls
 		else if (rolls.get(0).equals(Roll.STRIKE)) {
